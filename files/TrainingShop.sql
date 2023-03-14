@@ -74,8 +74,8 @@ CREATE TABLE T_Orders (
 ) ENGINE = InnoDB;
 
 ----------- Construction de la table du panier -----------
-CREATE TABLE T_Cart (
-	IdCart 			int(4) 		PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE T_OrderTraining (
+	IdOrderTraining 			int(4) 		PRIMARY KEY AUTO_INCREMENT,
 	IdTraining		int(4)		not null,
 	FOREIGN KEY(idTraining)		REFERENCES T_Trainings(idTraining),
 	Quantity		float(4)	not null default 0,
