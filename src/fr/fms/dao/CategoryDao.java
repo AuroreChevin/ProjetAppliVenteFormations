@@ -53,7 +53,7 @@ public class CategoryDao implements Dao<Category>{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return categories;
+		return null;
 	}
 	
 }

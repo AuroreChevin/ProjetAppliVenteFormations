@@ -9,7 +9,7 @@ public class Customer {
 	private String name;
 	private String firstname;
 	private String email;
-	private String adress;
+	private String address;
 	private String phone;
 	private int idUser;
 /**
@@ -18,17 +18,17 @@ public class Customer {
  * @param name String
  * @param firstname String
  * @param email String
- * @param adress String
+ * @param address String
  * @param phone String
  * @param idUser int
  */
-	public Customer(int idCustomer, String name, String firstname, String email, String adress, String phone,
+	public Customer(int idCustomer, String name, String firstname, String email, String address, String phone,
 			int idUser) {
 		this.idCustomer = idCustomer;
 		this.name = name;
 		this.firstname = firstname;
 		this.email = email;
-		this.adress = adress;
+		this.address = address;
 		this.phone = phone;
 		this.idUser = idUser;
 	}
@@ -37,15 +37,15 @@ public class Customer {
  * @param name String
  * @param firstname String
  * @param email String
- * @param adress String
+ * @param address String
  * @param phone String
  * @param idUser int
  */
-	public Customer(String name, String firstname, String email, String adress, String phone, int idUser) {
+	public Customer(String name, String firstname, String email, String address, String phone, int idUser) {
 		this.name = name;
 		this.firstname = firstname;
 		this.email = email;
-		this.adress = adress;
+		this.address = address;
 		this.phone = phone;
 		this.idUser = idUser;
 	}
@@ -109,15 +109,15 @@ public class Customer {
  * Méthode permettant de récupérer l'adresse du client
  * @return adress String
  */
-	public String getAdress() {
-		return adress;
+	public String getAddress() {
+		return address;
 	}
 /**
  * Méthode permettant de modifier l'adresse du client
  * @param adress String
  */
-	public void setAdress(String adress) {
-		this.adress = adress;
+	public void setAddress(String adress) {
+		this.address = adress;
 	}
 /**
  * Méthode permettant de récupérer le num du phone du client
@@ -155,6 +155,6 @@ public class Customer {
 	@Override
 	public String toString() {
 		return  idCustomer + " " + name + " " + firstname + " " + email
-				+ " " + adress + " " + phone;
+				+ " " + address + " " + phone;
 	}
 }

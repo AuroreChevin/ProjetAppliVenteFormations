@@ -16,8 +16,8 @@ public class CreateConfigFile {
 			Properties properties = new Properties();	
 			properties.setProperty("db.driver", "org.mariadb.jdbc.Driver");
 			properties.setProperty("db.url", "jdbc:mariadb://localhost:3306/TrainingShop");
-			properties.setProperty("db.login", "root");
-			properties.setProperty("db.password", "fms2023");			
+			properties.setProperty("db.login", "AuroreC");
+			properties.setProperty("db.password", "kwak09");			
 			properties.store(ops,"C'est un fichier pour la configuration");
 			System.out.println("Fichier créé !");
 		}

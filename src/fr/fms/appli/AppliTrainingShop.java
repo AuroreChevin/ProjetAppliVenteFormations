@@ -113,8 +113,11 @@ public class AppliTrainingShop {
 		System.out.println("\nSaisissez le chiffre de la formation à ajouter au panier");
 		int choice = scanInt();
 		Training training = business.readOneTraining(choice);
-		business.addToCart(training);
-		displayCart();
+		if(training != null) {
+			business.addToCart(training);
+			displayCart();
+		}
+		else System.out.println("Votre saisie ne correspond à aucune formation");
 	}
 	public static void displayCart() {
 		for(Training t : business.getCart()) System.out.println(t+" - " +t.getQuantity());

@@ -55,8 +55,9 @@ public class JobImpl implements Job {
 	@Override
 	public void addToCart(Training training) {
 		Training trg = cart.get(training.getIdTraining());
-		if(trg != null)
+		if(trg != null) {
 			trg.setQuantity(trg.getQuantity() +1);
+		}
 		else
 			cart.put(training.getIdTraining(), training);
 		

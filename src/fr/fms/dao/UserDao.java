@@ -69,11 +69,12 @@ public class UserDao implements Dao<User>{
 					String rsPassword = resultset.getString(3);
 					users.add(new User(rsIdUser, rsLogin, rsPassword));
 				}
+				return users;
 			}
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
-		return users;
+		return null;
 	}
 	
 }
