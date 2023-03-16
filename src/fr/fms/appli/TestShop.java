@@ -5,8 +5,10 @@ import java.util.Scanner;
 
 import fr.fms.dao.CategoryDao;
 import fr.fms.dao.TrainingDao;
+import fr.fms.dao.UserDao;
 import fr.fms.entities.Category;
 import fr.fms.entities.Training;
+import fr.fms.entities.User;
 
 public class TestShop {
 	public static Scanner scan = new Scanner(System.in);
@@ -26,7 +28,8 @@ public class TestShop {
 		System.out.println();
 //		trainings = trainingDao.readAll();
 		trainings.forEach((t) -> {System.out.println(t);});
-		
+		UserDao userdao = new UserDao();
+		userdao.create(new User("Fiston","d0TaMArc0"));
 	}
 
 }

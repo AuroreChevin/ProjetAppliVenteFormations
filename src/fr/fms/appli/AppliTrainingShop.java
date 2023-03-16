@@ -12,11 +12,12 @@ import fr.fms.entities.Training;
  *
  */
 public class AppliTrainingShop {
+	public static final String TEXT_GREEN = "\u001B[32m";
+	public static final String TEXT_RESET = "\u001B[0m";
 	public static Scanner scan = new Scanner(System.in);
 	public static JobImpl business = new JobImpl();
 	public static void main(String[] args) {
 		System.out.println("Bonjour et bienvenu dans la boutique de formations informatiques ");
-		
 		int choice = 0;
 		while(choice != 8) {
 			displayMenu();
@@ -34,21 +35,21 @@ public class AppliTrainingShop {
 					break;
 				case 6 : removeTraining();
 					break;
-				case 7 :// connection();
+				case 7 : displayOrder();
 					break;
-				case 8 :// connection();
+				case 8 : connectionUser();
 					break;
 				case 9 : System.out.println("A bientôt dans notre boutique :)");
 					break;					
 				default : System.out.println("Veuillez saisir une valeur entre 1 et 8");
 			}
 		}
-
 	}
 /**
 * Méthode qui affiche le menu principale
 */
-	public static void displayMenu() {	
+	public static void displayMenu() {
+		System.out.println(TEXT_GREEN);
 		System.out.println("\n" + "Pour réaliser une action, saisissez le chiffre correspondant");
 		System.out.println("1 : Afficher toutes les formations disponibles");
 		System.out.println("2 : Afficher les formations par catégorie");
@@ -59,6 +60,7 @@ public class AppliTrainingShop {
 		System.out.println("7 : Afficher mon panier + total pour passer commande");
 		System.out.println("8 : Connexion(Deconnexion) à votre compte");
 		System.out.println("9 : Sortir de l'application");
+		System.out.println(TEXT_RESET);
 	}
 	public static int scanInt() {
 		while(!scan.hasNextInt()) {
@@ -68,7 +70,7 @@ public class AppliTrainingShop {
 		return scan.nextInt();
 	}
 	public static String scanString() {
-		scan.nextLine();
+	//	scan.nextLine();
 		while(scan.hasNextInt()) {
 			System.out.println("saisissez un mot svp");
 			scan.nextLine();
@@ -97,10 +99,11 @@ public class AppliTrainingShop {
 /**
 * Méthode qui affiche toutes les formations par mot saisi
 */
-	public static void displayTrainingByWord() {		
+	public static void displayTrainingByWord() {
+		scan.nextLine();
 		System.out.println("Saisissez un mot : ");
 		String keyWord = scanString();
-		if(business.findTrainingByKeyWord(keyWord) != null) {
+		if(keyWord.matches("[a-zA-Z_0-9]") && business.findTrainingByKeyWord(keyWord) != null) {
 			System.out.println("Voici les formations contenant le mot : " +keyWord);
 			business.findTrainingByKeyWord(keyWord).forEach(System.out::println);
 		}
@@ -111,26 +114,18 @@ public class AppliTrainingShop {
 * Méthode qui affiche toutes les formations par mode d'apprentissage
 */
 	public static void displayTrainingByLocalisation() {
-//		int choice = 0;
 		String str = "";
-//		while(choice > 2 || choice == 0) {
-			System.out.println("\nVoici les modes d'apprentissage des formations : Présentiel ou Distanciel");
-			System.out.println("Saisissez le mode choisi : ");
-			str = scanString().toLowerCase();
-			if(str.matches("présentiel") || str.matches("distanciel")) {
+		scan.nextLine();
+		System.out.println("\nVoici les modes d'apprentissage des formations : Présentiel ou Distanciel");
+		System.out.println("Saisissez le mode choisi : ");
+		str = scanString().toLowerCase();
+		if(str.matches("présentiel") || str.matches("distanciel")) {
 			if(business.findTrainingByLocalisation(str) != null) {
 				System.out.println("Vous avez choisi le mode : "+str);
 				business.findTrainingByLocalisation(str).forEach(System.out::println);
-			}}
-//			System.out.println("1 : Présentiel ");
-//			System.out.println("2 : Distanciel ");
-//			choice = scanInt();
-//			if(choice >0 && choice <= 2) {
-//				System.out.println("Vous avez choisi le mode : "+business.readOneTraining(choice).getLocalisation());
-//				business.findTrainingByLocalisation(business.readOneTraining(choice).getLocalisation()).forEach(System.out::println);
-//			}
+			}
+			}
 			else System.out.println("Je n'ai pas compris votre choix");
-//		}
 	}
 /**
 * Méthode qui ajoute une formation au panier
@@ -155,7 +150,23 @@ public class AppliTrainingShop {
 			System.out.println("CONTENU DU PANIER");
 			for(Training t : business.getCart()) System.out.println(t+" - Quantité : " +t.getQuantity());
 		}
-		
+	}
+/**
+ * Méthode pour la connexion d'un utilisateur déjà en base.
+ */
+	public static void connectionUser() {
+		String log = "", pwd = "";
+		scan.nextLine();
+		System.out.println("Saisissez votre login : ");
+		log = scanString();
+			if(business.findUserByLogin(log)) {
+				System.out.println("Login ok");
+				System.out.println("Saisissez votre password : ");
+				pwd = scanString();
+				if(business.findUserByLoginAndPwd(log, pwd)==true) {
+					System.out.println("Vous êtes connectés !!!");
+				}
+			}
 	}
 /**
  * Méthode qui retire une formation du panier
@@ -167,5 +178,35 @@ public class AppliTrainingShop {
 		business.removeTrainingFromCart(choice);
 		displayCart();
 	}
-	
+/**
+ * Méthode qui affiche le contenu du panier avec sommme totale
+ */
+	public static void displayOrder() {
+		displayCart();
+		System.out.println("Le montant total de votre panier est : "+business.total());
+		System.out.println("Souhaitez vous passer commande ? Oui/Non :");
+		if(scan.next().equalsIgnoreCase("Oui")) 
+			{scan.nextLine();
+			System.out.println("Avez vous un compte utilisateur ? Oui/Non :");
+			if(scan.next().equalsIgnoreCase("Oui")) {
+				connectionUser();
+			}else newUser();
+			}
+	}
+/**
+* Méthode qui ajoute un nouvel utilisateur en base
+*/
+	public static void newUser() {
+		System.out.println("Saisissez un login :");
+		String login = scan.next(); 
+			System.out.println("saisissez votre password :");
+			String password = scan.next();
+			business.addUser(login,password);
+			System.out.println("création de l'utilisateur terminé, merci de vous connecter");
+		
+	}
+	public static boolean isValidEmail(String email) {
+		String regExp = "^[A-Za-z0-9._-]+@[A-Za-z0-9._-]+\\.[a-z][a-z]+$";	
+		return email.matches(regExp);
+	}
 }

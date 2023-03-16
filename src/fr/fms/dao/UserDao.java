@@ -24,7 +24,7 @@ public class UserDao implements Dao<User>{
 	@Override
 	public User read(int id) {
 		try (Statement statement = connection.createStatement()){
-			String str = "SELECT * FROM T_Users where IdUser=" + id + ";";									
+			String str = "SELECT * FROM T_Users where IdUser=" + id ;									
 			ResultSet rs = statement.executeQuery(str);
 			if(rs.next()) 
 				return new User(rs.getInt(1) , rs.getString(2) , rs.getString(3));
@@ -36,11 +36,12 @@ public class UserDao implements Dao<User>{
 
 	@Override
 	public boolean update(User obj) {
-		try (PreparedStatement ps = connection.prepareStatement("UPDATE T_Users SET Login =?, Password =? WHERE IdUser =?;")){
+		String str = "UPDATE T_Users SET Login =?, Password =? WHERE IdUser =?;";
+		try (PreparedStatement ps = connection.prepareStatement(str)){
 			ps.setString(1, obj.getLogin());
 			ps.setString(2, obj.getPassword());
 			ps.setInt(3, obj.getIdUser());			
-			if(ps.executeUpdate() == 1) {  System.out.println("update ok");	return true;}		
+			if(ps.executeUpdate() == 1) return true;		
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -49,9 +50,10 @@ public class UserDao implements Dao<User>{
 
 	@Override
 	public boolean delete(User obj) {
-		try(PreparedStatement ps = connection.prepareStatement("DELETE FROM T_Users WHERE IdUser = ?;")){
+		String str = "DELETE FROM T_Users WHERE IdUser =" +obj.getIdUser()+";";
+		try(PreparedStatement ps = connection.prepareStatement(str)){
 			ps.setInt(1, obj.getIdUser());
-			if(ps.executeUpdate() == 1) { System.out.println("delete ok");return true;}
+			if(ps.executeUpdate() == 1) return true;
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -60,8 +62,9 @@ public class UserDao implements Dao<User>{
 
 	@Override
 	public ArrayList<User> readAll() {
+		String str = "SELECT * FROM T_Users";
 		ArrayList<User> users = new ArrayList<User>();
-		try(PreparedStatement ps = connection.prepareStatement("SELECT * FROM T_Users")){
+		try(PreparedStatement ps = connection.prepareStatement(str)){
 			try(ResultSet resultset = ps.executeQuery()){				
 				while(resultset.next()) {
 					int rsIdUser = resultset.getInt(1);
@@ -76,5 +79,39 @@ public class UserDao implements Dao<User>{
 		}
 		return null;
 	}
-	
+	public User readUserByLogin(String login) {
+		String str = "SELECT * FROM T_Users WHERE login = ?;";
+		try (PreparedStatement ps = connection.prepareStatement(str)){
+			ps.setString(1, login);
+			ResultSet resultset = ps.executeQuery();
+				if(resultset.next()) {
+					int rsIdUser = resultset.getInt(1);
+					String rsLogin = resultset.getString(2);
+					String rsPassword = resultset.getString(3);
+					return new User(rsIdUser,rsLogin,rsPassword);
+				}
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}
+		return null;
+	}
+	public User readUserByLaP(String login, String password) {
+		String str = "SELECT * FROM T_Users WHERE login = ? and password =?;";
+		try (PreparedStatement ps = connection.prepareStatement(str)){
+			ps.setString(1, login);
+			ps.setString(2, password);
+			ResultSet resultset = ps.executeQuery();
+				if(resultset.next()) {
+					int rsIdUser = resultset.getInt(1);
+					String rsLogin = resultset.getString(2);
+					String rsPassword = resultset.getString(3);
+					return new User(rsIdUser,rsLogin,rsPassword);
+				}
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

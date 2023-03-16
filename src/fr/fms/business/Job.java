@@ -47,6 +47,11 @@ public interface Job {
  */
 	public ArrayList<Training> findTrainingByLocalisation(String str);
 /**
+* méthode qui renvoi sous la forme d'une liste tous les éléments du panier (gestion en mémoire)
+* @return Liste des formations du panier
+*/
+	public ArrayList<Training> getCart();
+/**
 * méthode qui ajoute un article au panier
 * @param article à ajouter
 */

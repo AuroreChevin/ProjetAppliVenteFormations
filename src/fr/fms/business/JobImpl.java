@@ -4,14 +4,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import fr.fms.dao.CategoryDao;
+import fr.fms.dao.CustomerDao;
+import fr.fms.dao.OrderDao;
 import fr.fms.dao.TrainingDao;
+import fr.fms.dao.UserDao;
 import fr.fms.entities.Category;
+import fr.fms.entities.Customer;
+import fr.fms.entities.Order;
 import fr.fms.entities.Training;
+import fr.fms.entities.User;
 
 public class JobImpl implements Job {
 	private HashMap<Integer,Training> cart;
 	private TrainingDao trainingDao = new TrainingDao();
 	private CategoryDao categoryDao = new CategoryDao();
+	private OrderDao orderDao = new OrderDao();
+	private UserDao userDao = new UserDao();
+	private CustomerDao customerDao = new CustomerDao();
 	
 	public JobImpl() {
 		this.cart = new HashMap<Integer,Training>();
@@ -62,7 +71,7 @@ public class JobImpl implements Job {
 			cart.put(training.getIdTraining(), training);
 		
 	}
-
+	@Override
 	public ArrayList<Training> getCart() {
 		return new ArrayList<Training> (cart.values());
 	}
@@ -76,8 +85,36 @@ public class JobImpl implements Job {
 		}
 		
 	}
+	
 	public boolean cartIsEmpty() {
 		return cart.isEmpty();
 	}
-
+	public double total() {
+		double total []= {0};
+		cart.values().forEach((a)->total [0] +=a.getQuantity()*a.getPrice());
+		 return total[0];
+	}
+//	public void Order() {
+//		Order order = cart.values();
+//		if(orderDao.create(order))
+//	}
+	public boolean findUserByLogin(String log) {
+		User user = userDao.readUserByLogin(log);
+		if(user != null) return true;
+		else return false;
+	}
+	public boolean findUserByLoginAndPwd(String log, String pwd) {
+		User user = userDao.readUserByLaP(log,pwd);
+		if(user != null) return true;
+		else return false;
+	}
+	public void clearCart() {
+		cart.clear();		
+	}
+	public void addUser(String log, String pwd) {
+		userDao.create(new User(log, pwd));
+	}
+	public void addCustomer(Customer customer) {
+		customerDao.create(customer);
+	}
 }
