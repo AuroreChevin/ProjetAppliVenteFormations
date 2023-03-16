@@ -11,6 +11,10 @@ import fr.fms.entities.Training;
  *
  */
 public class TrainingDao implements Dao<Training> {
+/**
+ * Méthode qui créé une nouvelle formation dans la table t_trainings, elle renvoie true
+ * lorsque l'insertion est réussie
+ */
 	@Override
 	public boolean create(Training obj) {
 		String str = "INSERT INTO T_Trainings (Name, Description, NbOfDays, Localisation, UnitaryPrice, IdCategory) VALUES (?,?,?,?,?,?);";
@@ -40,7 +44,10 @@ public class TrainingDao implements Dao<Training> {
 		}
 		return null;
 	}
-
+/**
+* Méthode qui met à jour une formation dans la table t_trainings, elle renvoie true
+ * lorsque la mise à jour est réussie
+*/
 	@Override
 	public boolean update(Training obj) {
 		String str = "UPDATE T_Trainings set Name = ?, Description=? , NbOfDays= ?, Localisation = ?, UnitaryPrice=? where idArticle=?;";
@@ -56,7 +63,10 @@ public class TrainingDao implements Dao<Training> {
 		}
 		return false;
 	}
-
+	/**
+	 * Méthode qui supprime une formation dans la table t_trainings, elle renvoie true
+	 * lorsque la suppression est réussie
+	 */
 	@Override
 	public boolean delete(Training obj) {
 		try (Statement statement = connection.createStatement()){
@@ -68,7 +78,9 @@ public class TrainingDao implements Dao<Training> {
 		}
 		return false;
 	}
-
+/**
+* Méthode qui renvoie la liste des formations contenues dans la table t_trainings
+*/
 	@Override
 	public ArrayList<Training> readAll() {
 		ArrayList<Training> trainings = new ArrayList<Training>();
@@ -92,6 +104,11 @@ public class TrainingDao implements Dao<Training> {
 		}
 		return null;
 	}
+/**
+ * Méthode qui lit les formations d'une catégorie choisie
+ * @param id
+ * @return liste des formations d'une catégorie
+ */
 	public ArrayList<Training> readAllByCategory(int id) {
 		ArrayList<Training> trainings = new ArrayList<Training>();
 		String strSql = "SELECT * FROM T_Trainings where idCategory=" + id;		
@@ -113,6 +130,11 @@ public class TrainingDao implements Dao<Training> {
 		}			
 		return null;
 	}
+	/**
+	 * Méthode qui lit les formations d'un mode d'apprentissage choisi
+	 * @param str localisation
+	 * @return liste des formations d'un mode d'apprentissage 
+	 */
 	public ArrayList<Training> readAllByLocalisation(String str) {
 		ArrayList<Training> trainings = new ArrayList<Training>();
 		String strSql = "SELECT * FROM T_Trainings where Localisation IN ('"+ str+"')";		
@@ -134,6 +156,11 @@ public class TrainingDao implements Dao<Training> {
 		}			
 		return null;
 	}
+	/**
+	 * Méthode qui lit les formations contenant un mot clé
+	 * @param str mot clé
+	 * @return liste des formations contenant le mot clé 
+	 */
 	public ArrayList<Training> readAllByKeyWord(String str) {
 		ArrayList<Training> trainings = new ArrayList<Training>();
 		String strSql = "SELECT * FROM T_Trainings inner join t_categories on t_trainings.idcategory = t_categories.idcategory WHERE name LIKE '%"+ str+"%' "

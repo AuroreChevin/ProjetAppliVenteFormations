@@ -67,8 +67,17 @@ public class JobImpl implements Job {
 		return new ArrayList<Training> (cart.values());
 	}
 
-//	public void setCart(HashMap<Integer, Training> cart) {
-//		this.cart = cart;
-//	}
-//	
+	@Override
+	public void removeTrainingFromCart(int id) {
+		Training training = cart.get(id);
+		if(training != null) {
+			if(training.getQuantity() == 1) cart.remove(id);
+			else training.setQuantity(training.getQuantity() -1);
+		}
+		
+	}
+	public boolean cartIsEmpty() {
+		return cart.isEmpty();
+	}
+
 }

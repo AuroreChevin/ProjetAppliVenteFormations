@@ -26,7 +26,7 @@ public class TestShop {
 		System.out.println();
 //		trainings = trainingDao.readAll();
 		trainings.forEach((t) -> {System.out.println(t);});
-
+		
 	}
 
 }

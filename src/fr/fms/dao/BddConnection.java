@@ -26,15 +26,15 @@ public class BddConnection {
 			Class.forName(driver);	
 			connection = DriverManager.getConnection(url,login,password);				
 			
-		}			
-		catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-		catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} 
-		catch (IOException e) {
-			e.printStackTrace();
+			}			
+			catch (ClassNotFoundException | SQLException e) {
+				e.printStackTrace();
+			}
+			catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} 
+			catch (IOException e) {
+				e.printStackTrace();
 		}
 	}
 /**

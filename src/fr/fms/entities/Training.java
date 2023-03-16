@@ -183,8 +183,8 @@ public class Training {
  */
 	@Override
 	public String toString() {
-		return idTraining + " - " + name + " - " + description + " - "
-				+ nbOfDays + " - " + localisation + " - " + price;
+		return idTraining + " - NOM : " + name + " - DESCRIPTION : " + description + " - DUREE : "
+				+ nbOfDays + " - MODE : " + localisation + " - PRICE : " + price;
 	}
 	
 	

@@ -2,10 +2,15 @@ package fr.fms.appli;
 
 import java.util.HashMap;
 import java.util.Scanner;
-
 import fr.fms.business.JobImpl;
 import fr.fms.entities.Training;
-
+/**
+ * Application console de vente de formations permettant d'exploiter une couche métier/dao 
+ * pour créer un panier en ajoutant ou retirant des formations, puis passer commande, 
+ * cela crée une commande en base avec tous les éléments associés
+ * @author ChevinA 2023
+ *
+ */
 public class AppliTrainingShop {
 	public static Scanner scan = new Scanner(System.in);
 	public static JobImpl business = new JobImpl();
@@ -27,7 +32,7 @@ public class AppliTrainingShop {
 					break;						
 				case 5 : addTraining();
 					break;
-				case 6 : //displayArticlesByCategoryId();
+				case 6 : removeTraining();
 					break;
 				case 7 :// connection();
 					break;
@@ -40,6 +45,9 @@ public class AppliTrainingShop {
 		}
 
 	}
+/**
+* Méthode qui affiche le menu principale
+*/
 	public static void displayMenu() {	
 		System.out.println("\n" + "Pour réaliser une action, saisissez le chiffre correspondant");
 		System.out.println("1 : Afficher toutes les formations disponibles");
@@ -71,6 +79,9 @@ public class AppliTrainingShop {
 		System.out.println("Voici la liste de nos formations disponibles :\n ");
 		business.readTraining().forEach(System.out::println);
 	}
+/**
+* Méthode qui affiche toutes les formations par catégorie
+*/
 	public static void displayTrainingsByCat() {
 		System.out.println("Voici la liste des catégories des formations :\n ");
 		business.readCategories().forEach(System.out::println);
@@ -83,6 +94,9 @@ public class AppliTrainingShop {
 		else
 			System.out.println("Cette catégorie n'existe pas");
 	}
+/**
+* Méthode qui affiche toutes les formations par mot saisi
+*/
 	public static void displayTrainingByWord() {		
 		System.out.println("Saisissez un mot : ");
 		String keyWord = scanString();
@@ -93,23 +107,36 @@ public class AppliTrainingShop {
 		else
 			System.out.println("Aucune formation ne contient le mot : " +keyWord);
 	}
+/**
+* Méthode qui affiche toutes les formations par mode d'apprentissage
+*/
 	public static void displayTrainingByLocalisation() {
-		int choice = 0;
-		while(choice > 2 || choice == 0) {
-			System.out.println("\nVoici les modes d'apprentissage des formations : ");
-			System.out.println("1 : Présentiel");
-			System.out.println("2 : Distanciel ");
-			choice = scanInt();
-			if(choice >0 && choice <= 2) {
-				System.out.println("Vous avez choisi le mode : "+business.readOneTraining(choice).getLocalisation());
-				business.findTrainingByLocalisation(business.readOneTraining(choice).getLocalisation()).forEach(System.out::println);
-			}
+//		int choice = 0;
+		String str = "";
+//		while(choice > 2 || choice == 0) {
+			System.out.println("\nVoici les modes d'apprentissage des formations : Présentiel ou Distanciel");
+			System.out.println("Saisissez le mode choisi : ");
+			str = scanString().toLowerCase();
+			if(str.matches("présentiel") || str.matches("distanciel")) {
+			if(business.findTrainingByLocalisation(str) != null) {
+				System.out.println("Vous avez choisi le mode : "+str);
+				business.findTrainingByLocalisation(str).forEach(System.out::println);
+			}}
+//			System.out.println("1 : Présentiel ");
+//			System.out.println("2 : Distanciel ");
+//			choice = scanInt();
+//			if(choice >0 && choice <= 2) {
+//				System.out.println("Vous avez choisi le mode : "+business.readOneTraining(choice).getLocalisation());
+//				business.findTrainingByLocalisation(business.readOneTraining(choice).getLocalisation()).forEach(System.out::println);
+//			}
 			else System.out.println("Je n'ai pas compris votre choix");
-		}
+//		}
 	}
+/**
+* Méthode qui ajoute une formation au panier
+*/
 	public static void addTraining() {
-		System.out.println("Liste des formations :\n ");
-		business.readTraining().forEach(System.out::println);
+		displayAllTrainings();
 		System.out.println("\nSaisissez le chiffre de la formation à ajouter au panier");
 		int choice = scanInt();
 		Training training = business.readOneTraining(choice);
@@ -119,9 +146,26 @@ public class AppliTrainingShop {
 		}
 		else System.out.println("Votre saisie ne correspond à aucune formation");
 	}
+/**
+* Méthode qui affiche le contenu du panier
+*/
 	public static void displayCart() {
-		for(Training t : business.getCart()) System.out.println(t+" - " +t.getQuantity());
+		if(business.cartIsEmpty()) System.out.println("VOTRE PANIER EST VIDE");
+		else{
+			System.out.println("CONTENU DU PANIER");
+			for(Training t : business.getCart()) System.out.println(t+" - Quantité : " +t.getQuantity());
+		}
 		
+	}
+/**
+ * Méthode qui retire une formation du panier
+ */
+	public static void removeTraining() {
+		displayCart();
+		System.out.println("Saisissez le chiffre de la formation que vous voulez supprimer : ");
+		int choice = scanInt();
+		business.removeTrainingFromCart(choice);
+		displayCart();
 	}
 	
 }

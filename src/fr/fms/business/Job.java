@@ -1,7 +1,6 @@
 package fr.fms.business;
 
 import java.util.ArrayList;
-
 import fr.fms.entities.Category;
 import fr.fms.entities.Training;
 
@@ -41,11 +40,20 @@ public interface Job {
  * @return liste des formations
  */
 	public ArrayList<Training> findTrainingByKeyWord(String str);
-
+/**
+ * Méthode qui renvoie la liste des formations correspondant au mode d'apprentissage choisi
+ * @param str
+ * @return liste des formations
+ */
 	public ArrayList<Training> findTrainingByLocalisation(String str);
 /**
 * méthode qui ajoute un article au panier
 * @param article à ajouter
 */
 	public void addToCart(Training training);
+/**
+ * méthode qui retire une formation du panier si elle y est
+ * @param id de la formation
+ */
+	public void removeTrainingFromCart(int id);
 }
